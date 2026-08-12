@@ -1,0 +1,531 @@
+/* ============================================================
+   BARBERÍA RAMÍREZ — demo de negocio local (fórmula 01_WEB_DE_NEGOCIO v1.2)
+
+   Identidad: verde inglés profundo + crema fría + latón.
+   A propósito NO es "oscuro" como Fuerza Sur ni "claro" como Café Aurora:
+   es de bandas alternadas, que es el recurso visual de una barbería
+   tradicional (el damero, el toldo a rayas) llevado a la página.
+   ============================================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --verde: #14261f;          /* banda oscura */
+  --verde-2: #1b3129;        /* superficie sobre banda oscura */
+  --crema: #ece7df;          /* banda clara, gris-cálido (NO el crema del café) */
+  --crema-2: #e2dbd0;
+  --tinta: #1c2622;          /* texto sobre claro */
+  --tinta-suave: #5d6b64;
+  --papel: #e8e3d8;          /* texto sobre oscuro */
+  --papel-suave: #a4b0a8;
+  --laton: #b08d3f;
+  --laton-claro: #d4b169;
+  --linea-clara: #cfc7b9;
+  --linea-oscura: #2c4438;
+  --max-width: 1200px;       /* mismo criterio que los otros dos demos, ver 01_DECISIONES.md */
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--crema);
+  color: var(--tinta);
+  font-family: 'Karla', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 22px; }
+
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3 { font-family: 'Zilla Slab', Georgia, serif; line-height: 1.08; font-weight: 700; }
+h1 { font-size: clamp(2.6rem, 9vw, 5.2rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.75rem, 4.4vw, 2.8rem); margin-bottom: 14px; letter-spacing: -0.01em; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+
+/* Acento sin segunda fuente: versalita espaciada + subrayado de latón.
+   Fuerza Sur usó serif itálica y Café Aurora manuscrita — repetir el truco
+   una tercera vez sería la misma receta con otro ingrediente. */
+.mark {
+  position: relative;
+  white-space: nowrap;
+  background-image: linear-gradient(var(--laton), var(--laton));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 100% 6px;
+  padding-bottom: 2px;
+}
+
+/* Etiqueta de sección: regla de latón corta arriba, versalitas.
+   Reemplaza el "01 — SECCIÓN" que ya se usó en los dos demos anteriores. */
+.label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  padding-top: 14px;
+  border-top: 2px solid var(--laton);
+  display: inline-block;
+}
+
+/* ===== Bandas ===== */
+.band-dark { background: var(--verde); color: var(--papel); }
+.band-dark .label { color: var(--laton-claro); }
+.band-dark p { color: var(--papel-suave); }
+.band-dark h1, .band-dark h2, .band-dark h3 { color: var(--papel); }
+
+.band-light { background: var(--crema); color: var(--tinta); }
+.band-light .label { color: var(--tinta); }
+.band-light p { color: var(--tinta-suave); }
+
+/* ===== Header ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--verde);
+  border-bottom: 1px solid var(--linea-oscura);
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 64px;
+}
+.logo { display: flex; align-items: center; gap: 10px; color: var(--papel); }
+.logo-mark {
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border: 1.5px solid var(--laton);
+  color: var(--laton-claro);
+  flex: 0 0 auto;
+}
+.logo-text {
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-weight: 500;
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.site-header nav {
+  margin-left: auto;
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.site-header nav::-webkit-scrollbar { display: none; }
+.site-header nav a {
+  color: var(--papel-suave);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: color .18s ease, border-color .18s ease;
+}
+.site-header nav a:hover,
+.site-header nav a:focus-visible { color: var(--papel); border-bottom-color: var(--laton); }
+
+.nav-cta {
+  background: var(--laton);
+  color: var(--verde);
+  font-weight: 700;
+  font-size: 0.83rem;
+  letter-spacing: 0.03em;
+  padding: 10px 18px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: background .18s ease;
+}
+.nav-cta:hover { background: var(--laton-claro); }
+
+@media (max-width: 860px) {
+  .site-header nav { display: none; }
+  .site-header .wrap { min-height: 58px; }
+  .logo-text { font-size: 0.95rem; }
+  .nav-cta { margin-left: auto; }
+}
+
+/* ===== Hero ===== */
+.hero { padding: clamp(52px, 10vw, 104px) 0 clamp(48px, 9vw, 96px); }
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: end;
+}
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--laton-claro) !important;
+  margin-bottom: 22px;
+}
+.hero h1 { margin-bottom: 24px; }
+.hero .lead {
+  font-size: clamp(1rem, 1.9vw, 1.12rem);
+  max-width: 46ch;
+  margin-bottom: 30px;
+}
+
+/* Ficha lateral del hero: bloque de datos duros, no una card.
+   Sin fondo ni radio — solo una regla de latón a la izquierda. */
+.hero-aside {
+  border-left: 2px solid var(--laton);
+  padding-left: 20px;
+  padding-bottom: 6px;
+}
+.aside-line { font-size: 0.95rem; margin-bottom: 6px; }
+.aside-line strong { color: var(--papel); font-weight: 700; }
+.aside-line.muted { font-size: 0.88rem; opacity: 0.75; margin-top: 12px; }
+.aside-foot {
+  margin-top: 18px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  border-top: 1px solid var(--linea-oscura);
+  padding-top: 14px;
+}
+
+@media (max-width: 820px) {
+  .hero-inner { grid-template-columns: 1fr; align-items: start; }
+  .hero-aside { margin-top: 8px; }
+}
+
+/* ===== Botones ===== */
+.cta {
+  display: inline-block;
+  background: var(--laton);
+  color: var(--verde);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 15px 30px;
+  min-height: 48px;             /* dedo, no mouse */
+  transition: background .18s ease, transform .18s ease;
+}
+.cta:hover { background: var(--laton-claro); }
+.cta:active { transform: translateY(1px); }
+.band-light .cta { color: #fff; background: var(--verde); }
+.band-light .cta:hover { background: #21402f; }
+
+.cta-ghost {
+  background: transparent;
+  color: var(--papel);
+  border: 1px solid var(--linea-oscura);
+}
+.cta-ghost:hover { background: transparent; border-color: var(--laton); color: var(--laton-claro); }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+/* ===== Secciones ===== */
+.section { padding: clamp(56px, 9vw, 104px) 0; }
+.section-tight { padding-top: 0; }
+.section-note { font-size: 0.94rem; max-width: 60ch; margin-bottom: 34px; }
+
+/* ===== Carta de precios (patrón dominante del rubro) ===== */
+.carta {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(30px, 5vw, 72px);
+  border-top: 1px solid var(--linea-clara);
+  padding-top: 34px;
+}
+.carta-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--laton) !important;
+  margin-bottom: 18px;
+  font-family: 'Karla', sans-serif;
+}
+.price-list { list-style: none; }
+.price-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--linea-clara);
+}
+.pl-name {
+  font-weight: 600;
+  font-size: 1.02rem;
+  color: var(--tinta);
+  display: flex;
+  flex-direction: column;
+}
+.pl-name em {
+  font-style: normal;
+  font-size: 0.79rem;
+  font-weight: 400;
+  color: var(--tinta-suave);
+  letter-spacing: 0.01em;
+  margin-top: 1px;
+}
+.pl-dots {
+  flex: 1 1 auto;
+  min-width: 18px;
+  border-bottom: 1px dotted var(--linea-clara);
+  transform: translateY(-3px);
+}
+.pl-price {
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.06rem;
+  color: var(--verde);
+  white-space: nowrap;
+}
+.pl-featured { background: var(--crema-2); margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
+.pl-featured .pl-price { color: var(--laton); }
+
+.carta-nota {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  border-left: 2px solid var(--laton);
+  padding-left: 16px;
+}
+.carta-cta { margin-top: 38px; align-items: center; }
+.cta-aside { font-size: 0.88rem; color: var(--tinta-suave); max-width: 34ch; }
+
+@media (max-width: 780px) {
+  .carta { grid-template-columns: 1fr; }
+  .pl-name { font-size: 0.98rem; }
+}
+
+/* ===== Equipo ===== */
+.staff {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 36px);
+  align-items: start;
+}
+/* La del medio va corrida hacia abajo a propósito: rompe la fila perfecta
+   de tres cards idénticas, que es el tell más visible de "hecho con IA". */
+.staff-card-offset { margin-top: 40px; }
+@media (max-width: 860px) {
+  .staff { grid-template-columns: 1fr; }
+  .staff-card-offset { margin-top: 0; }
+}
+.staff-card { border-top: 1px solid var(--linea-oscura); padding-top: 18px; }
+.staff-photo { aspect-ratio: 4 / 5; margin-bottom: 16px; }
+.staff-card h3 { margin-bottom: 2px; }
+.staff-role {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--laton-claro) !important;
+  margin-bottom: 10px;
+}
+.staff-bio { font-size: 0.94rem; margin-bottom: 12px; }
+.staff-days { font-size: 0.85rem; color: var(--papel) !important; font-weight: 600; margin-bottom: 14px; }
+.staff-link {
+  display: inline-block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--laton-claro);
+  border-bottom: 1px solid var(--laton);
+  padding-bottom: 2px;
+}
+.staff-link:hover { color: var(--papel); border-color: var(--papel); }
+
+/* ===== Slots de foto honestos (nada de stock disfrazado) ===== */
+.photo-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  text-align: center;
+  border: 1px dashed var(--linea-clara);
+  color: var(--tinta-suave);
+  background: repeating-linear-gradient(135deg, var(--crema-2), var(--crema-2) 9px, #d8d0c2 9px, #d8d0c2 18px);
+}
+.band-dark .photo-slot {
+  border-color: var(--linea-oscura);
+  color: var(--papel-suave);
+  background: repeating-linear-gradient(135deg, var(--verde-2), var(--verde-2) 9px, #17352a 9px, #17352a 18px);
+}
+.photo-slot svg { opacity: 0.5; }
+.photo-slot span, .photo-slot figcaption {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  padding: 0 10px;
+}
+
+/* ===== Trabajos — carrusel con scroll-snap (ni mosaico ni grilla) ===== */
+.works {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px max(22px, calc((100vw - var(--max-width)) / 2 + 22px)) 18px;
+  scrollbar-width: thin;
+}
+.works:focus-visible { outline: 2px solid var(--laton); outline-offset: 4px; }
+.work {
+  flex: 0 0 auto;
+  width: 230px;
+  height: 290px;
+  scroll-snap-align: start;
+  border-radius: 2px;
+}
+.work-tall { height: 340px; width: 250px; }
+.work-wide { width: 380px; height: 260px; border-radius: 2px 40px 2px 2px; }
+.works-hint { font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+@media (max-width: 620px) {
+  .work { width: 200px; height: 250px; }
+  .work-tall { height: 280px; width: 210px; }
+  .work-wide { width: 280px; height: 230px; }
+}
+
+/* ===== Visita: pasos + horarios ===== */
+.visita-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 80px);
+  padding-top: clamp(56px, 9vw, 104px);
+  border-top: 1px solid var(--linea-clara);
+  align-items: start;
+}
+@media (max-width: 820px) { .visita-grid { grid-template-columns: 1fr; } }
+
+.steps { list-style: none; margin-top: 22px; }
+.steps li { display: flex; gap: 16px; margin-bottom: 20px; align-items: baseline; }
+.step-n {
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--laton);
+  line-height: 1;
+  flex: 0 0 26px;
+}
+.steps strong { color: var(--tinta); }
+.steps span:last-child { font-size: 0.96rem; color: var(--tinta-suave); }
+.visita-nota { margin-top: 26px; font-size: 0.92rem; }
+.visita-nota strong { color: var(--verde); }
+
+.hours { margin-top: 20px; }
+.hours > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--linea-clara);
+  font-size: 0.95rem;
+}
+.hours dt { font-weight: 600; color: var(--tinta); }
+.hours dd { font-variant-numeric: tabular-nums; color: var(--tinta-suave); }
+.hours .closed dt, .hours .closed dd { opacity: 0.5; }
+.hours .closed dd { font-style: italic; }
+.hours-note { font-size: 0.84rem; margin-top: 14px; }
+
+/* ===== Reseñas — quotes escalonadas, sin card ni borde lateral ===== */
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: 8px;
+}
+@media (max-width: 860px) { .quotes { grid-template-columns: 1fr; } }
+.quote { position: relative; padding-top: 26px; }
+.quote::before {
+  content: '“';
+  position: absolute;
+  top: -14px;
+  left: -6px;
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 4.2rem;
+  line-height: 1;
+  color: var(--laton);
+  opacity: 0.45;
+}
+.quote p { color: var(--papel) !important; font-size: 1rem; line-height: 1.6; margin-bottom: 12px; }
+.quote cite {
+  font-style: normal;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--laton-claro);
+}
+@media (min-width: 861px) {
+  .quote-b { margin-top: 34px; }
+  .quote-c { margin-top: 68px; }
+}
+
+/* ===== Dónde ===== */
+.donde-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); /* mapa a la izquierda: inverso al café */
+  gap: clamp(28px, 5vw, 56px);
+  align-items: start;
+}
+@media (max-width: 820px) { .donde-grid { grid-template-columns: 1fr; } }
+.map-embed iframe { display: block; filter: grayscale(0.35) contrast(1.05); }
+.map-caption { font-size: 0.78rem; margin-top: 8px; }
+
+.contact-list { list-style: none; }
+.contact-list li {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--linea-clara);
+  font-size: 0.95rem;
+}
+.ci {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--laton);
+  padding-top: 4px;
+}
+.contact-list a[data-placeholder] { color: var(--tinta-suave); border-bottom: 1px dashed var(--linea-clara); }
+.donde-nota { font-size: 0.9rem; margin: 20px 0 26px; }
+
+/* ===== Footer ===== */
+.site-footer { padding: 30px 0; border-top: 1px solid var(--linea-oscura); }
+.footer-inner { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: baseline; }
+.footer-brand { font-size: 0.86rem; color: var(--papel) !important; font-weight: 600; }
+.footer-note { font-size: 0.78rem; }
+
+/* ===== WhatsApp flotante ===== */
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #10231a;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 22px rgba(10, 25, 18, 0.35);
+  z-index: 40;
+  transition: transform .2s ease;
+}
+.whatsapp-float:hover { transform: scale(1.07); }
+
+/* ===== Reveal — solo en los h2, no en cada elemento.
+   Fuerza Sur y Café Aurora revelaban card por card con delays escalonados;
+   repetirlo acá sería la animación genérica que delata la plantilla. ===== */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ===== Foco visible en todo lo interactivo ===== */
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--laton);
+  outline-offset: 3px;
+}

@@ -1,0 +1,266 @@
+/* ===== Reset & base ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #f7f0e4;         /* crema cálido, NO negro — a propósito, para que se sienta distinto al gym */
+  --bg-alt: #efe3d0;
+  --text: #3b2a1e;        /* marrón café oscuro en vez de blanco */
+  --text-muted: #7a6b58;
+  --accent: #c1622d;      /* terracota */
+  --accent-2: #8a6d3a;    /* mostaza apagado */
+  --border: #ddccb0;
+  --radius: 12px;
+  --max-width: 1200px;    /* mismo criterio que Fuerza Sur, ver 01_DECISIONES.md */
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Serif cálida para títulos (Fraunces) + manuscrita para la palabra de acento (Caveat) —
+   mismo recurso de contraste tipográfico que en Fuerza Sur, con otra personalidad. */
+h1, h2, h3 {
+  line-height: 1.15;
+  font-weight: 600;
+  font-family: 'Fraunces', Georgia, serif;
+  letter-spacing: 0;
+}
+h1 { font-size: clamp(2.2rem, 7vw, 5rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 24px; }
+h3 { font-size: 1.15rem; margin-bottom: 8px; }
+p { color: var(--text-muted); }
+
+.accent {
+  font-family: 'Caveat', cursive;
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 1.15em;
+}
+
+.section-index {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+/* ===== Header ===== */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  position: sticky;
+  top: 0;
+  background: rgba(247, 240, 228, 0.92);
+  backdrop-filter: blur(6px);
+  z-index: 10;
+}
+.site-header .wrap { display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 20px; }
+.logo { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 600; font-size: 1.3rem; color: var(--text); }
+
+/* Nav elegante: subrayado que crece desde el centro al pasar el mouse,
+   en vez del simple cambio de color plano que traía copiado del gym.
+   El margin-left:auto va en el <nav>, no en el botón — así el grupo
+   "links + Reservar mesa" queda pegado a la derecha, lejos del logo,
+   en vez de logo y nav pegados con el botón solo en la punta. */
+.site-header nav { display: flex; align-items: center; margin-left: auto; }
+.site-header nav a {
+  position: relative;
+  color: var(--text-muted);
+  margin-left: 26px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding-bottom: 4px;
+}
+.site-header nav a:first-child { margin-left: 0; }
+.site-header nav a:hover { color: var(--text); text-decoration: none; }
+.site-header nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent);
+  transition: width 0.25s ease, left 0.25s ease;
+}
+.site-header nav a:hover::after { width: 100%; left: 0; }
+
+.nav-cta {
+  margin-left: 26px;
+  background: var(--accent);
+  color: #fbf6ee;
+  padding: 9px 18px;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.nav-cta:hover { text-decoration: none; opacity: 0.9; }
+@media (max-width: 700px) {
+  .nav-cta { display: none; } /* en mobile el WhatsApp flotante ya cubre esta función */
+}
+
+/* ===== Hero ===== */
+.hero {
+  padding: clamp(64px, 12vw, 120px) 0 clamp(48px, 8vw, 88px);
+  background: radial-gradient(circle at top right, rgba(193, 98, 45, 0.12), transparent 60%);
+}
+.eyebrow { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; color: var(--accent-2); margin-bottom: 16px; font-weight: 700; }
+.hero h1 { color: var(--text); margin-bottom: 20px; max-width: 100%; }
+.hero .lead { max-width: 520px; margin-bottom: 32px; font-size: 1.05rem; }
+
+.cta {
+  display: inline-block;
+  background: var(--accent);
+  color: #fbf6ee;
+  padding: 14px 26px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.cta:hover { text-decoration: none; opacity: 0.9; }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.cta-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.cta-secondary:hover { border-color: var(--accent); opacity: 1; }
+
+/* ===== Scroll reveal — vanilla JS (IntersectionObserver) + CSS, sin librerías ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+.reveal-grow {
+  transform: translateY(16px) scale(0.9);
+  transform-origin: left center;
+}
+.reveal-grow.is-visible { transform: translateY(0) scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-grow { opacity: 1; transform: none; transition: none; }
+}
+
+/* ===== Sections ===== */
+.section { padding: clamp(48px, 8vw, 96px) 24px; }
+.section.alt { background: var(--bg-alt); padding: clamp(48px, 8vw, 96px) 0; }
+.section.alt .wrap { padding: 0 24px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+
+.card {
+  background: #fffdf9;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.section.alt .card { background: var(--bg); }
+.card h3 { color: var(--text); }
+.card p { font-size: 0.92rem; margin: 0; }
+.price { font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem; font-weight: 600; color: var(--accent); margin: 4px 0 8px; }
+
+.section-note { font-size: 0.88rem; margin-bottom: 22px; max-width: 560px; }
+
+table.schedule { width: 100%; border-collapse: collapse; margin-top: 8px; max-width: 480px; }
+table.schedule th, table.schedule td {
+  text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 0.95rem;
+}
+table.schedule th { color: var(--accent-2); text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* ===== Galería — mosaico, no grilla pareja ===== */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 160px;
+  gap: 10px;
+}
+.g-item { width: 100%; height: 100%; border-radius: 4px; }
+.g-tall { grid-row: span 2; border-radius: 4px 24px 4px 4px; }
+.g-wide { grid-column: span 2; }
+@media (max-width: 640px) {
+  .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 130px; }
+  .g-wide { grid-column: span 2; }
+}
+
+.g-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: repeating-linear-gradient(135deg, var(--bg-alt), var(--bg-alt) 10px, #e6d6ba 10px, #e6d6ba 20px);
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  text-align: center;
+  padding: 10px;
+}
+.g-slot svg { opacity: 0.55; }
+.g-slot span { font-size: 0.72rem; letter-spacing: 0.02em; }
+
+/* ===== Reseñas — sin card, borde lateral ===== */
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 28px;
+  margin-top: 8px;
+}
+.review { border-left: 3px solid var(--accent); padding-left: 18px; }
+.review p { color: var(--text); font-size: 1rem; font-style: italic; margin-bottom: 10px; }
+.review cite { color: var(--accent-2); font-size: 0.82rem; font-style: normal; font-weight: 600; }
+
+/* ===== Contacto + mapa ===== */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+.contact-list { list-style: none; margin: 20px 0 28px; }
+.contact-list li { margin-bottom: 10px; font-size: 0.98rem; color: var(--text-muted); }
+.contact-list a[data-placeholder] { color: var(--text-muted); border-bottom: 1px dashed var(--border); }
+.map-embed iframe { border-radius: var(--radius); filter: sepia(0.15) contrast(1.05); }
+.map-caption { font-size: 0.78rem; margin-top: 8px; }
+@media (max-width: 700px) {
+  .contact-layout { grid-template-columns: 1fr; }
+}
+
+.site-footer { border-top: 1px solid var(--border); padding: 26px 0; }
+.site-footer p { font-size: 0.82rem; text-align: center; color: var(--text-muted); }
+
+/* ===== WhatsApp flotante ===== */
+.whatsapp-float {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #2b2b2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(59, 42, 30, 0.25);
+  z-index: 20;
+  transition: transform 0.2s ease;
+}
+.whatsapp-float:hover { transform: scale(1.08); text-decoration: none; }
+
+@media (max-width: 560px) {
+  .site-header nav a { margin-left: 12px; font-size: 0.82rem; }
+}

@@ -1,0 +1,399 @@
+/* ===== Reset & base ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #121212;
+  --bg-alt: #1a1a1a;
+  --text: #f4f1ec;
+  --text-muted: #b8b2a7;
+  --accent: #ff5a2d;
+  --accent-2: #ffb347;
+  --border: #2c2c2c;
+  --radius: 12px;
+  /* CLIC usa ~1440px de contenedor (visto con DevTools el 27/07/2026).
+     Vamos a un intermedio: más aire que antes (960px), sin pretender
+     ser una cadena de 3 sedes. Ver 01_DECISIONES.md. */
+  --max-width: 1200px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Contraste tipográfico tipo CLIC: display bold para el grueso del texto,
+   serif itálica para la palabra que queremos que respire distinto. */
+h1, h2, h3 {
+  line-height: 1.15;
+  font-weight: 800;
+  font-family: 'Anton', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+h1 { font-size: clamp(2.4rem, 9vw, 6.5rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 24px; }
+h3 { font-size: 1.1rem; margin-bottom: 8px; letter-spacing: 0.02em; }
+p { color: var(--text-muted); }
+
+.accent {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  color: var(--accent-2);
+  letter-spacing: 0;
+}
+
+.section-index {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+/* ===== Header ===== */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  position: sticky;
+  top: 0;
+  background: rgba(18, 18, 18, 0.92);
+  backdrop-filter: blur(6px);
+  z-index: 10;
+}
+.site-header .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.logo { font-weight: 900; letter-spacing: 0.05em; color: var(--accent); }
+.site-header nav a { color: var(--text); margin-left: 22px; font-size: 0.92rem; font-weight: 600; }
+.site-header nav a:first-child { margin-left: 0; }
+.site-header nav a:hover { color: var(--accent); text-decoration: none; }
+
+/* ===== Hero ===== */
+.hero {
+  padding: 96px 0 72px;
+  background: radial-gradient(circle at top right, rgba(255,90,45,0.15), transparent 60%);
+}
+.eyebrow { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; color: var(--accent-2); margin-bottom: 16px; font-weight: 700; }
+.hero h1 { color: var(--text); margin-bottom: 20px; max-width: 100%; }
+.hero .lead { max-width: 520px; margin-bottom: 32px; font-size: 1.05rem; }
+
+.cta {
+  display: inline-block;
+  background: var(--accent);
+  color: #121212;
+  padding: 14px 26px;
+  border-radius: var(--radius);
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.cta:hover { text-decoration: none; opacity: 0.9; }
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.cta-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.cta-secondary:hover { border-color: var(--accent); opacity: 1; }
+
+/* ===== Scroll reveal — vanilla JS (IntersectionObserver) + CSS, sin librerías =====
+   Elige compatibilidad amplia por sobre animation-timeline:view() (CSS puro, ~84%
+   soporte global a mediados de 2026). Ver 01_DECISIONES.md, sección Animaciones. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-grow {
+  transform: translateY(16px) scale(0.88);
+  transform-origin: left center;
+}
+.reveal-grow.is-visible {
+  transform: translateY(0) scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-grow { opacity: 1; transform: none; transition: none; }
+}
+
+/* ===== Sections =====
+   CLIC usa 96px de padding vertical en pantallas grandes (visto con DevTools).
+   Usamos clamp para lograr ese mismo "aire" en desktop sin ser excesivo en mobile. */
+.section { padding: clamp(48px, 8vw, 96px) 24px; }
+.section.alt { background: var(--bg-alt); padding: clamp(48px, 8vw, 96px) 0; }
+.section.alt .wrap { padding: 0 24px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; }
+
+.card {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.section.alt .card { background: var(--bg); }
+.card h3 { color: var(--text); }
+.card p { font-size: 0.92rem; margin: 0; }
+
+.plan { text-align: left; position: relative; }
+.plan.featured { border-color: var(--accent); }
+.plan .tag {
+  position: absolute; top: -12px; right: 16px;
+  background: var(--accent); color: #121212;
+  font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 100px;
+}
+.price { font-size: 1.8rem; font-weight: 900; color: var(--accent-2); margin: 8px 0 12px; }
+.price span { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+
+table.schedule { width: 100%; border-collapse: collapse; margin-top: 8px; }
+table.schedule th, table.schedule td {
+  text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 0.92rem;
+}
+table.schedule th { color: var(--accent-2); text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.04em; }
+
+.contact-list { list-style: none; margin: 20px 0 28px; }
+.contact-list li { margin-bottom: 10px; font-size: 0.98rem; color: var(--text-muted); }
+.contact-list a[data-placeholder] { color: var(--text-muted); border-bottom: 1px dashed var(--border); }
+
+.section-note { font-size: 0.88rem; margin-bottom: 22px; max-width: 560px; }
+
+/* ===== Galería — a propósito NO es una grilla pareja, para que no se sienta "hecha con IA" ===== */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 160px;
+  gap: 10px;
+}
+.g-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px; /* distinto radio que las cards a propósito */
+}
+.g-tall { grid-row: span 2; border-radius: 4px 20px 4px 4px; }
+.g-wide { grid-column: span 2; }
+@media (max-width: 640px) {
+  .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 130px; }
+  .g-wide { grid-column: span 2; }
+}
+
+/* Slot de foto pendiente — honesto en vez de fingir una foto real que no existe */
+.g-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: repeating-linear-gradient(135deg, var(--bg-alt), var(--bg-alt) 10px, #201f1f 10px, #201f1f 20px);
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  text-align: center;
+  padding: 10px;
+}
+.g-slot svg { opacity: 0.5; }
+.g-slot span { font-size: 0.72rem; letter-spacing: 0.02em; }
+
+/* ===== Reseñas — sin cards, para romper el patrón repetido de .card ===== */
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 28px;
+  margin-top: 8px;
+}
+.review {
+  border-left: 3px solid var(--accent);
+  padding-left: 18px;
+}
+.review p { color: var(--text); font-size: 1rem; font-style: italic; margin-bottom: 10px; }
+.review cite { color: var(--accent-2); font-size: 0.82rem; font-style: normal; font-weight: 600; }
+
+/* ===== Reserva (formulario + automatización) =====
+   Nota de diseño: a propósito NO usa .card ni el mismo radio que Planes/Clases.
+   Los inputs son de línea inferior (no cajas) y los pasos van con numeral
+   grande, para que la sección se sienta distinta al resto — error conocido #4
+   de la fórmula (que no se note "hecho con IA" por repetir el mismo patrón). */
+.booking {
+  display: grid;
+  grid-template-columns: minmax(200px, 0.8fr) 1.4fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 12px;
+}
+
+.booking-steps { list-style: none; counter-reset: none; }
+.booking-steps li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.booking-steps li:last-child { border-bottom: none; }
+.step-num {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  color: var(--accent);
+  line-height: 1;
+}
+.booking-steps p { font-size: 0.92rem; margin: 0; }
+
+.booking-form { display: flex; flex-direction: column; gap: 18px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+.field label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.field label .opt { text-transform: none; letter-spacing: 0; font-weight: 400; opacity: 0.7; }
+
+.field input,
+.field select,
+.field textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 8px 2px;
+  width: 100%;
+  border-radius: 0; /* Safari en iOS redondea los inputs por defecto */
+  transition: border-color 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field textarea { resize: vertical; line-height: 1.5; }
+
+.field select {
+  /* La flecha nativa desaparece con appearance:none, así que la dibujamos. */
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23b8b2a7' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 2px center;
+  background-size: 11px;
+  padding-right: 22px;
+  cursor: pointer;
+}
+.field select option { background: var(--bg-alt); color: var(--text); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+/* Foco visible por teclado, sin ensuciar el clic con mouse. */
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: #6d675e; }
+
+/* Los íconos nativos de fecha/hora son negros sobre fondo oscuro: se invierten. */
+.field input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.75); cursor: pointer; }
+
+.field.has-error input,
+.field.has-error select,
+.field.has-error textarea { border-bottom-color: #e0533f; }
+.field-error { font-size: 0.76rem; color: #e0533f; }
+
+/* Honeypot: fuera de pantalla en vez de display:none.
+   Algunos bots ignoran los campos ocultos con display:none, pero sí completan
+   los que están posicionados fuera de la vista. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.booking-form .cta {
+  align-self: flex-start;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 4px;
+}
+.booking-form .cta[disabled] { opacity: 0.55; cursor: progress; }
+
+.form-msg { font-size: 0.92rem; margin: 0; min-height: 1px; }
+.form-msg.ok { color: #4ac97e; }
+.form-msg.error { color: #e0533f; }
+.form-legal { font-size: 0.74rem; color: var(--text-muted); opacity: 0.75; margin: 0; }
+
+@media (max-width: 820px) {
+  .booking { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 480px) {
+  .field-row { grid-template-columns: 1fr; gap: 18px; }
+  /* Menos de 16px hace que iOS haga zoom solo al enfocar un input. */
+  .field input, .field select, .field textarea { font-size: 16px; }
+}
+
+/* ===== Contacto + mapa ===== */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+.map-embed iframe { border-radius: var(--radius); filter: grayscale(0.3) contrast(1.1); }
+.map-caption { font-size: 0.78rem; margin-top: 8px; }
+@media (max-width: 700px) {
+  .contact-layout { grid-template-columns: 1fr; }
+}
+
+.site-footer { border-top: 1px solid var(--border); padding: 26px 0; }
+.site-footer p { font-size: 0.82rem; text-align: center; }
+
+@media (max-width: 560px) {
+  .site-header nav a { margin-left: 12px; font-size: 0.82rem; }
+  .hero { padding: 64px 0 48px; }
+}
+
+/* ===== Botón flotante de WhatsApp — patrón esperado en webs de negocios locales ===== */
+.whatsapp-float {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+  transition: transform 0.2s ease;
+}
+.whatsapp-float:hover {
+  transform: scale(1.08);
+  text-decoration: none;
+}
