@@ -207,7 +207,7 @@ const RESERVA_CONFIG = {
     }
 
     if (!RESERVA_CONFIG.SCRIPT_URL) {
-      mostrar('ok', 'Modo demo: los datos son válidos, pero todavía no hay una URL de script cargada. Ver automatizacion/README_DEPLOY.md.');
+      mostrar('ok', 'Modo demo: los datos son válidos. En esta muestra pública la reserva no se envía de verdad.');
       return;
     }
 
